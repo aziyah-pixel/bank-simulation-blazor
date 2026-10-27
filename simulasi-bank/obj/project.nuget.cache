@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "py1ChwMzhDU=",
+  "success": true,
+  "projectFilePath": "D:\\GITHUB\\bank-simulation-blazor\\simulasi-bank\\simulasi-bank.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\lenovo\\.nuget\\packages\\microsoft.aspnetcore.app.internal.assets\\10.0.12\\microsoft.aspnetcore.app.internal.assets.10.0.12.nupkg.sha512"
+  ],
+  "logs": []
+}
