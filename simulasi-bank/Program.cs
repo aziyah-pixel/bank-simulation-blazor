@@ -1,10 +1,13 @@
 using simulasi_bank.Components;
+using simulasi_bank.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+builder.Services.AddSingleton<BankService>();
 
 var app = builder.Build();
 
