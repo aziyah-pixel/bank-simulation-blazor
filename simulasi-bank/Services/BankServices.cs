@@ -51,16 +51,24 @@ public class BankService
         CurrentUser = null;
     }
 
-    // Fungsi agar Teller bisa membuat akun nasabah baru (akan kita pakai nanti di halaman Teller)
+        // Fungsi agar Teller bisa membuat akun nasabah baru
     public bool CreateNasabah(User newNasabah)
     {
-        // Pastikan username belum dipakai
+        // 1. Cek apakah username sudah pernah dipakai
         if (_users.Any(u => u.Username.Equals(newNasabah.Username, StringComparison.OrdinalIgnoreCase)))
         {
             return false;
         }
 
         newNasabah.Role = UserRole.Nasabah;
+
+        // 2. Buat Nomor Rekening unik otomatis (misal: 100xxxxx) jika belum ada
+        if (string.IsNullOrWhiteSpace(newNasabah.NomorRekening))
+        {
+            newNasabah.NomorRekening = "100" + Random.Shared.Next(100000, 999999).ToString();
+        }
+
+        // 3. Masukkan ke dalam daftar
         _users.Add(newNasabah);
         return true;
     }

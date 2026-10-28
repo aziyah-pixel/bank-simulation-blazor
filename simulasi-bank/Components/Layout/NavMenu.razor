@@ -1,6 +1,6 @@
 ﻿<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="">simulasi-bank</a>
+        <a class="navbar-brand" href="teller">Bank Simulation</a>
     </div>
 </div>
 
@@ -9,22 +9,33 @@
 <div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
     <nav class="nav flex-column">
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
+            <NavLink class="nav-link" href="teller/buka-rekening">
+                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Buka Rekening
             </NavLink>
         </div>
 
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Counter
+            <NavLink class="nav-link" href="teller/daftar-nasabah">
+                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Daftar Nasabah
             </NavLink>
         </div>
 
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="weather">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Weather
+            <NavLink class="nav-link" href="teller/setor">
+                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Setor Tunai
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="teller/tarik">
+                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Tarik Tunai
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="teller/riwayat">
+                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Riwayat Transaksi
             </NavLink>
         </div>
     </nav>
 </div>
-

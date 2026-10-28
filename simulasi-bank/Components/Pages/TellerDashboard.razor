@@ -1,41 +1,237 @@
 @page "/teller"
+@page "/teller/{SubMenu}"
 @rendermode InteractiveServer
 @using simulasi_bank.Services
 @using simulasi_bank.Models
 @inject BankService BankService
 @inject NavigationManager Navigation
+@implements IDisposable
 
-<PageTitle>Dashboard Teller</PageTitle>
+<PageTitle>Portal Teller</PageTitle>
 
-<div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
-        <div>
-            <h2 class="text-primary mb-0">Portal Teller Bank</h2>
-            <small class="text-muted">Halo, <strong>@(BankService.CurrentUser?.NamaLengkap ?? "Teller")</strong></small>
+<div class="container-fluid py-3 px-4">
+    <!-- Judul Halaman -->
+    <div class="mb-4">
+        <h3 class="fw-bold text-dark mb-1">Buka Rekening Nasabah Baru</h3>
+        <p class="text-muted mb-0">Isi kelengkapan data nasabah untuk registrasi akun tabungan perbankan.</p>
+    </div>
+
+    <!-- KONTEN BERDASARKAN MENU YANG DIKLIK DI SIDEBAR -->
+    @if (CurrentMenu == "buka-rekening")
+    {
+        <div class="card shadow-sm border-0 rounded-3 w-100">
+            <div class="card-body p-4 p-lg-5">
+                @if (!string.IsNullOrEmpty(successMessage))
+                {
+                     <div class="alert alert-success border-success border-2 shadow-sm p-4 mb-4" role="alert">
+                        <div class="d-flex align-items-center mb-2">
+                            <span class="fs-4 me-2">🎉</span>
+                            <h5 class="alert-heading fw-bold mb-0 text-success">Pendaftaran Nasabah Berhasil!</h5>
+                        </div>
+                        <hr />
+                        <p class="mb-0 fs-5">@successMessage</p>
+                    </div>
+                }
+
+                @if (!string.IsNullOrEmpty(errorMessage))
+                {
+                    <div class="alert alert-danger py-2 mb-4">
+                        @errorMessage
+                    </div>
+                }
+
+                <!-- Form Grid 2 Kolom (Kiri dan Kanan) -->
+                <div class="row g-4">
+                    <!-- KOLOM KIRI: DATA PRIBADI & AKUN -->
+                    <div class="col-lg-6 pe-lg-4 border-end-lg">
+                        <h5 class="fw-bold text-primary mb-3 pb-2 border-bottom">1. Data Pribadi & Login Nasabah</h5>
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Nama Lengkap Nasabah</label>
+                            <input type="text" class="form-control form-control-lg" @bind="inputNama" placeholder="Nama lengkap sesuai KTP" />
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-semibold">Username Login</label>
+                                <input type="text" class="form-control form-control-lg" @bind="inputUsername" placeholder="Username unik nasabah" />
+                                <small class="text-muted">Untuk login di portal nasabah</small>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-semibold">Password</label>
+                                <input type="password" class="form-control form-control-lg" @bind="inputPassword" placeholder="Buat kata sandi" />
+                                <small class="text-muted">Aman dan mudah diingat</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- KOLOM KANAN: SETORAN AWAL & REKENING -->
+                    <div class="col-lg-6 ps-lg-4">
+                        <h5 class="fw-bold text-primary mb-3 pb-2 border-bottom">2. Informasi Tabungan & Setoran Awal</h5>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Nominal Setoran Awal (Rp)</label>
+                            <div class="input-group input-group-lg">
+                                <span class="input-group-text fw-bold bg-light">Rp</span>
+                                <input type="number" class="form-control" @bind="inputSetoranAwal" min="10000" step="10000" />
+                            </div>
+                            <small class="text-muted">Minimal setoran tunai pertama Rp 10.000</small>
+                        </div>
+
+                        <!-- Card Info Tambahan -->
+                        <div class="p-3 bg-light rounded-3 border mt-4">
+                            <div class="d-flex align-items-center mb-1 text-primary fw-bold">
+                                <span class="me-2">💡</span> Informasi Pembuatan Akun
+                            </div>
+                            <p class="text-muted small mb-0">
+                                Nomor Rekening unik (10 digit) akan dibuat secara otomatis oleh sistem saat tombol proses diklik. Nasabah dapat langsung menggunakan username dan password untuk login.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="my-4" />
+
+                <!-- Tombol Submit Full/Lebar di Bagian Bawah -->
+                <div class="d-flex justify-content-end gap-2">
+                    <button class="btn btn-outline-secondary px-4 py-2" @onclick="ResetForm">
+                        Reset Form
+                    </button>
+                    <button class="btn btn-primary btn-lg px-5 py-2 fw-bold shadow-sm" @onclick="HandleBuatAkun">
+                        + Proses & Buka Rekening
+                    </button>
+                </div>
+            </div>
         </div>
-        <button class="btn btn-outline-danger btn-sm" @onclick="HandleLogout">
-            Keluar (Logout)
-        </button>
-    </div>
-
-    <div class="alert alert-info">
-        Selamat datang di halaman Teller! Di sini nantinya kamu bisa membuat akun nasabah baru.
-    </div>
+    }
+    else
+    {
+        <div class="alert alert-secondary text-center py-5 rounded-3 w-100">
+            <h4 class="text-muted fw-bold">Menu @CurrentMenu</h4>
+            <p class="text-muted mb-0">Fitur ini akan kita bangun di langkah berikutnya 🚀</p>
+        </div>
+    }
 </div>
 
 @code {
+    [Parameter]
+    public string? SubMenu { get; set; }
+
+    private string CurrentMenu => string.IsNullOrEmpty(SubMenu) ? "buka-rekening" : SubMenu;
+
+    private string inputNama = "";
+    private string inputUsername = "";
+    private string inputPassword = "";
+    private decimal inputSetoranAwal = 50000;
+
+    private string errorMessage = "";
+    private string successMessage = "";
+
+     // Objek untuk mengontrol timer 10 detik
+    private CancellationTokenSource? _timerCts;
+
     protected override void OnInitialized()
     {
-        // Proteksi: Jika belum login atau bukan Teller, kembalikan ke halaman login
         if (BankService.CurrentUser == null || BankService.CurrentUser.Role != UserRole.Teller)
         {
             Navigation.NavigateTo("/");
         }
     }
 
-    private void HandleLogout()
+      // Fungsi khusus untuk mengosongkan isian form saja
+    private void ResetInputs()
     {
-        BankService.Logout();
-        Navigation.NavigateTo("/");
+        inputNama = "";
+        inputUsername = "";
+        inputPassword = "";
+        inputSetoranAwal = 50000;
+    }
+
+    // Fungsi tombol "Reset Form"
+    private void ResetForm()
+    {
+         _timerCts?.Cancel(); // Batalkan timer jika direset manual
+        ResetInputs();
+        errorMessage = "";
+        successMessage = "";
+    }
+
+  // Method async agar tombol bisa menunggu timer berjalan di latar belakang
+    private void HandleBuatAkun()
+    {
+        // Bersihkan pesan error sebelumnya
+        errorMessage = "";
+        successMessage = "";
+
+        if (string.IsNullOrWhiteSpace(inputNama) || 
+            string.IsNullOrWhiteSpace(inputUsername) || 
+            string.IsNullOrWhiteSpace(inputPassword))
+        {
+            errorMessage = "Semua field harus diisi!";
+             _ = StartDismissTimerAsync(); // Mulai hitung mundur 10 detik
+            return;
+        }
+
+        if (inputSetoranAwal < 10000)
+        {
+            errorMessage = "Setoran awal minimal Rp 10.000!";
+             _ = StartDismissTimerAsync(); // Mulai hitung mundur 10 detik
+            return;
+        }
+
+        var newNasabah = new User
+        {
+            NamaLengkap = inputNama,
+            Username = inputUsername.Trim(),
+            Password = inputPassword,
+            Saldo = inputSetoranAwal
+        };
+
+        bool isCreated = BankService.CreateNasabah(newNasabah);
+
+        if (isCreated)
+        {
+           // Set pesan sukses yang rapi
+            successMessage = $"Rekening atas nama '{newNasabah.NamaLengkap}' telah aktif dengan No. Rekening: {newNasabah.NomorRekening} dan Saldo Awal Rp {newNasabah.Saldo:N0}";
+            errorMessage = "";
+           
+            // Kosongkan form input saja tanpa menghapus pesan sukses!
+            ResetInputs();
+             _ = StartDismissTimerAsync(); // Mulai hitung mundur 10 detik
+        }
+        else
+        {
+            errorMessage = "Username tersebut sudah digunakan oleh akun lain!";
+             _ = StartDismissTimerAsync(); // Mulai hitung mundur 10 detik
+        }
+    }
+    
+    // Fungsi Timer Otomatis 10 Detik
+    private async Task StartDismissTimerAsync()
+    {
+        // 1. Batalkan timer lama jika ada aksi baru
+        _timerCts?.Cancel();
+        _timerCts = new CancellationTokenSource();
+        var token = _timerCts.Token;
+        try
+        {
+            // 2. Tunggu selama 10 detik (10.000 ms)
+            await Task.Delay(10000, token);
+            // 3. Bersihkan pesan
+            successMessage = "";
+            errorMessage = "";
+            // 4. Perintahkan Blazor untuk merender ulang tampilan
+            await InvokeAsync(StateHasChanged);
+        }
+        catch (TaskCanceledException)
+        {
+            // Timer dibatalkan karena ada pesan/aksi baru (bisa diabaikan)
+        }
+    }
+    // Membersihkan resource timer ketika user berpindah halaman
+    public void Dispose()
+    {
+        _timerCts?.Cancel();
+        _timerCts?.Dispose();
     }
 }
