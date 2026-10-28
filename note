@@ -1,0 +1,33 @@
+👨Menu untuk Role TELLER (Pihak Bank)
+
+Fokus Teller adalah pelayanan nasabah dan operasional kasir:
+
+1. Buka Rekening Baru (Fitur Utama)
+Form pendaftaran nasabah baru (Nama, Username, Password, dan Setoran Awal).
+Sistem otomatis membuatkan Nomor Rekening unik (misal: 1001...).
+2. Daftar Nasabah
+Tabel untuk melihat semua nasabah yang terdaftar.
+Fitur pencarian berdasarkan Nomor Rekening atau Nama.
+3. Setor Tunai (Deposit)
+Teller memasukkan nomor rekening nasabah dan nominal uang yang ingin disetor tunai.
+Saldo nasabah otomatis bertambah.
+4. Tarik Tunai (Withdrawal)
+Teller melayani penarikan uang tunai nasabah (dengan validasi saldo mencukupi).
+5. Riwayat Semua Transaksi Bank
+Teller bisa memantau semua pergerakan uang yang terjadi di bank hari ini.
+
+👨‍👩‍👧‍👦Menu untuk Role NASABAH (Pengguna Bank)
+
+Fokus Nasabah adalah melihat informasi rekening dan melakukan transaksi mandiri:
+
+1.  Ringkasan Akun (Dashboard Utama)
+Menampilkan Nama Pemilik, Nomor Rekening, dan Total Saldo.
+2. Transfer Saldo (Kirim Uang)
+Nasabah bisa mentransfer saldo ke nasabah lain dengan memasukkan Nomor Rekening Tujuan dan Nominal.
+Saldo pengirim berkurang, saldo penerima otomatis bertambah.
+3. Mutasi Rekening (Riwayat Transaksi)
+Daftar riwayat transaksi khusus akun tersebut:
+🟢 Uang Masuk (Kredit): Setoran dari Teller, transferan masuk dari orang lain.
+🔴 Uang Keluar (Debit): Penarikan tunai lewat Teller, transfer keluar ke orang lain.
+4. Ubah Password (opsional untuk tahap lanjut)
+Untuk mengganti password login nasabah.
