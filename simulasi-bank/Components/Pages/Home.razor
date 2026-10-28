@@ -2,6 +2,11 @@
 @layout Layout.EmptyLayout
 @rendermode InteractiveServer
 
+@using simulasi_bank.Services
+@using simulasi_bank.Models
+@inject BankService BankService
+@inject NavigationManager Navigation
+
 <PageTitle>Login - Bank Simulation</PageTitle>
 
 <div class="d-flex align-items-center justify-content-center min-vh-100 bg-light">
@@ -31,6 +36,12 @@
         <button class="btn btn-primary w-100 py-2 mt-2" @onclick="HandleLogin">
             Masuk
         </button>
+
+        <div class="mt-4 p-2 bg-light rounded text-muted small">
+            <div><strong>Akun Demo:</strong></div>
+            <div>Teller: <code>teller1</code> | pass: <code>123</code></div>
+            <div>Nasabah: <code>budi</code> | pass: <code>123</code></div>
+        </div>
     </div>
 </div>
 
@@ -47,7 +58,25 @@
             return;
         }
 
+        // Cek login ke service
+        var user = BankService.Login(username, password);
+
+        if (user == null)
+        {
+            errorMessage = "Username atau password salah!";
+            return;
+        }
+
         errorMessage = "";
-        Console.WriteLine($"Mencoba login dengan user: {username}");
+
+        // Arahkan ke halaman sesuai Role
+        if (user.Role == UserRole.Teller)
+        {
+            Navigation.NavigateTo("/teller");
+        }
+        else if (user.Role == UserRole.Nasabah)
+        {
+            Navigation.NavigateTo("/nasabah");
+        }
     }
 }

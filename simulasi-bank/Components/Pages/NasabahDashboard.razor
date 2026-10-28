@@ -1,0 +1,56 @@
+@page "/nasabah"
+@rendermode InteractiveServer
+@using simulasi_bank.Services
+@using simulasi_bank.Models
+@inject BankService BankService
+@inject NavigationManager Navigation
+
+<PageTitle>Dashboard Nasabah</PageTitle>
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
+        <div>
+            <h2 class="text-success mb-0">Akun Nasabah</h2>
+            <small class="text-muted">Selamat datang, <strong>@(BankService.CurrentUser?.NamaLengkap ?? "Nasabah")</strong></small>
+        </div>
+        <button class="btn btn-outline-danger btn-sm" @onclick="HandleLogout">
+            Keluar (Logout)
+        </button>
+    </div>
+
+    @if (BankService.CurrentUser != null)
+    {
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card shadow-sm border-0 bg-light">
+                    <div class="card-body">
+                        <h6 class="text-muted">Nomor Rekening:</h6>
+                        <h4 class="fw-bold">@BankService.CurrentUser.NomorRekening</h4>
+                        <hr />
+                        <h6 class="text-muted">Saldo Anda:</h6>
+                        <h3 class="text-success fw-bold">
+                            Rp @BankService.CurrentUser.Saldo.ToString("N0")
+                        </h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    protected override void OnInitialized()
+    {
+        // Proteksi: Jika belum login atau bukan Nasabah, kembalikan ke login
+        if (BankService.CurrentUser == null || BankService.CurrentUser.Role != UserRole.Nasabah)
+        {
+            Navigation.NavigateTo("/");
+        }
+    }
+
+    private void HandleLogout()
+    {
+        BankService.Logout();
+        Navigation.NavigateTo("/");
+    }
+}

@@ -1,0 +1,41 @@
+@page "/teller"
+@rendermode InteractiveServer
+@using simulasi_bank.Services
+@using simulasi_bank.Models
+@inject BankService BankService
+@inject NavigationManager Navigation
+
+<PageTitle>Dashboard Teller</PageTitle>
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
+        <div>
+            <h2 class="text-primary mb-0">Portal Teller Bank</h2>
+            <small class="text-muted">Halo, <strong>@(BankService.CurrentUser?.NamaLengkap ?? "Teller")</strong></small>
+        </div>
+        <button class="btn btn-outline-danger btn-sm" @onclick="HandleLogout">
+            Keluar (Logout)
+        </button>
+    </div>
+
+    <div class="alert alert-info">
+        Selamat datang di halaman Teller! Di sini nantinya kamu bisa membuat akun nasabah baru.
+    </div>
+</div>
+
+@code {
+    protected override void OnInitialized()
+    {
+        // Proteksi: Jika belum login atau bukan Teller, kembalikan ke halaman login
+        if (BankService.CurrentUser == null || BankService.CurrentUser.Role != UserRole.Teller)
+        {
+            Navigation.NavigateTo("/");
+        }
+    }
+
+    private void HandleLogout()
+    {
+        BankService.Logout();
+        Navigation.NavigateTo("/");
+    }
+}

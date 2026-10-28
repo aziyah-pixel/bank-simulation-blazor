@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("simulasi-bank")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3c3adae79f6e43e31a7d5b3ebba01564e215402d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b667cf35c05b0f890ea4175169b151afae38ff3d")]
 [assembly: System.Reflection.AssemblyProductAttribute("simulasi-bank")]
 [assembly: System.Reflection.AssemblyTitleAttribute("simulasi-bank")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
