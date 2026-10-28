@@ -1,7 +1,53 @@
 ﻿@page "/"
+@layout Layout.EmptyLayout
+@rendermode InteractiveServer
 
-<PageTitle>Home</PageTitle>
+<PageTitle>Login - Bank Simulation</PageTitle>
 
-<h1>Hello, world!</h1>
+<div class="d-flex align-items-center justify-content-center min-vh-100 bg-light">
+    <div class="card shadow p-4" style="width: 100%; max-width: 400px; border-radius: 12px;">
+        <div class="text-center mb-4">
+            <h3 class="fw-bold text-primary">Bank Simulation</h3>
+            <p class="text-muted">Silakan masuk ke akun Anda</p>
+        </div>
 
-Welcome to your new app.
+        <div class="mb-3">
+            <label class="form-label fw-semibold">Username</label>
+            <input type="text" class="form-control" @bind="username" placeholder="Masukkan username" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-semibold">Password</label>
+            <input type="password" class="form-control" @bind="password" placeholder="Masukkan password" />
+        </div>
+
+        @if (!string.IsNullOrEmpty(errorMessage))
+        {
+            <div class="alert alert-danger py-2 small">
+                @errorMessage
+            </div>
+        }
+
+        <button class="btn btn-primary w-100 py-2 mt-2" @onclick="HandleLogin">
+            Masuk
+        </button>
+    </div>
+</div>
+
+@code {
+    private string username = "";
+    private string password = "";
+    private string errorMessage = "";
+
+    private void HandleLogin()
+    {
+        if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+        {
+            errorMessage = "Username dan password tidak boleh kosong!";
+            return;
+        }
+
+        errorMessage = "";
+        Console.WriteLine($"Mencoba login dengan user: {username}");
+    }
+}
